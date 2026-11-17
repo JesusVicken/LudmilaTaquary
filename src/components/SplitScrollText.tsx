@@ -10,15 +10,16 @@ interface SplitScrollTextProps {
   className?: string;
   triggerStart?: string;
   triggerEnd?: string;
-  italicPhrases?: string[];
+  startRatio?: number; // viewport height ratio where reveal starts (default 0.84)
+  endRatio?: number;   // viewport height ratio where reveal finishes (default 0.36)
 }
 
 export const SplitScrollText: React.FC<SplitScrollTextProps> = ({
   text,
   as: Tag = 'p',
   className = '',
-  triggerStart = 'top 85%',
-  triggerEnd = 'bottom 48%',
+  startRatio = 0.84,
+  endRatio = 0.36,
 }) => {
   const containerRef = useRef<HTMLElement | null>(null);
 
@@ -30,38 +31,60 @@ export const SplitScrollText: React.FC<SplitScrollTextProps> = ({
       '(prefers-reduced-motion: reduce)'
     ).matches;
 
-    const chars = el.querySelectorAll<HTMLElement>('.split-char');
+    const chars = Array.from(el.querySelectorAll<HTMLElement>('.split-char'));
     if (!chars.length) return;
 
     if (prefersReducedMotion) {
-      gsap.set(chars, { opacity: 1, y: 0 });
+      chars.forEach((c) => {
+        c.style.opacity = '1';
+      });
       return;
     }
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        chars,
-        {
-          opacity: 0.14,
-          y: 6,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          ease: 'none',
-          stagger: 0.018,
-          scrollTrigger: {
-            trigger: el,
-            start: triggerStart,
-            end: triggerEnd,
-            scrub: 0.65,
-          },
-        }
-      );
-    }, el);
+    const total = chars.length;
+    const spread = Math.max(3, Math.round(total * 0.08));
 
-    return () => ctx.revert();
-  }, [text, triggerStart, triggerEnd]);
+    const updateReveal = () => {
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const startY = vh * startRatio;
+      const endY = vh * endRatio;
+
+      const rawProgress = (startY - rect.top) / Math.max(startY - endY, 1);
+      const progress = Math.min(Math.max(rawProgress, 0), 1);
+
+      const currentPoint = progress * (total + spread);
+
+      for (let i = 0; i < total; i++) {
+        const dist = currentPoint - i;
+        let alpha = 0;
+        if (dist >= spread) {
+          alpha = 1;
+        } else if (dist > 0) {
+          alpha = dist / spread;
+        }
+        const opacity = 0.16 + alpha * 0.84;
+        chars[i].style.opacity = opacity.toFixed(3);
+      }
+    };
+
+    // Initial state calculation
+    updateReveal();
+
+    // Sync with GSAP ScrollTrigger (Lenis ticker) + native scroll/resize events
+    const trigger = ScrollTrigger.create({
+      onUpdate: updateReveal,
+    });
+
+    window.addEventListener('scroll', updateReveal, { passive: true });
+    window.addEventListener('resize', updateReveal);
+
+    return () => {
+      trigger.kill();
+      window.removeEventListener('scroll', updateReveal);
+      window.removeEventListener('resize', updateReveal);
+    };
+  }, [text, startRatio, endRatio]);
 
   const words = text.split(' ');
 
@@ -75,7 +98,11 @@ export const SplitScrollText: React.FC<SplitScrollTextProps> = ({
         <React.Fragment key={wordIdx}>
           <span className="split-word" aria-hidden="true">
             {Array.from(word).map((char, charIdx) => (
-              <span key={charIdx} className="split-char">
+              <span
+                key={charIdx}
+                className="split-char"
+                style={{ opacity: 0.16 }}
+              >
                 {char}
               </span>
             ))}

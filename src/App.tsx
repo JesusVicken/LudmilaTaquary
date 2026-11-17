@@ -4,11 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { HeroExperience } from './components/HeroExperience';
 import { AboutSection } from './components/AboutSection';
+import { ScrollKeywordsMarquee } from './components/ScrollKeywordsMarquee';
 import { ServicesSection } from './components/ServicesSection';
 import { TalksSection } from './components/TalksSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { ProgressSidebar, SectionKey, SECTIONS } from './components/ProgressSidebar';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -141,6 +143,8 @@ export const App: React.FC = () => {
         onNavigate={handleNavigateBySectionKey}
       />
 
+      <FloatingWhatsApp visible={preloaderComplete} />
+
       <main className="site-main">
         <HeroExperience
           onPreloaderComplete={handlePreloaderComplete}
@@ -148,6 +152,7 @@ export const App: React.FC = () => {
           onNavigateSection={scrollToTarget}
         />
         <AboutSection />
+        <ScrollKeywordsMarquee />
         <ServicesSection />
         <TalksSection />
         <FaqSection />

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
@@ -40,6 +40,59 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
 
   const [loadPercent, setLoadPercent] = useState(0);
   const [preloaderDone, setPreloaderDone] = useState(false);
+  const [typingActive, setTypingActive] = useState(false);
+  const [typedCount, setTypedCount] = useState(0);
+
+  const quoteText = LUDMILA_CONTENT.hero.upperLeftQuote;
+
+  // Pre-compute word/character tokens with global character indices so words never wrap-jump mid-typing
+  const quoteTokens = useMemo(() => {
+    const words = quoteText.split(' ');
+    let globalIndex = 0;
+    return words.map((word, wordIdx) => {
+      const chars = Array.from(word).map((char) => {
+        const item = { char, index: globalIndex };
+        globalIndex += 1;
+        return item;
+      });
+      const hasSpace = wordIdx < words.length - 1;
+      const spaceIndex = hasSpace ? globalIndex : null;
+      if (hasSpace) globalIndex += 1;
+      return { word, chars, hasSpace, spaceIndex };
+    });
+  }, [quoteText]);
+
+  // Typewriter cadence effect
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    if (prefersReducedMotion) {
+      setTypedCount(quoteText.length);
+      return;
+    }
+
+    if (!typingActive) return;
+
+    if (typedCount >= quoteText.length) return;
+
+    const prevChar = typedCount > 0 ? quoteText[typedCount - 1] : '';
+    let delay = 34;
+    if (prevChar === ',') {
+      delay = 220; // Natural breath pause after comma
+    } else if (prevChar === '.') {
+      delay = 140;
+    } else if (typedCount === 0) {
+      delay = 120;
+    }
+
+    const timer = window.setTimeout(() => {
+      setTypedCount((prev) => Math.min(prev + 1, quoteText.length));
+    }, delay);
+
+    return () => window.clearTimeout(timer);
+  }, [typingActive, typedCount, quoteText]);
 
   // 1. Preloader sequence + seamless transition to Hero
   useEffect(() => {
@@ -50,6 +103,18 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
     if (prefersReducedMotion) {
       setLoadPercent(100);
       setPreloaderDone(true);
+      setTypingActive(true);
+      setTypedCount(quoteText.length);
+      gsap.set(
+        [
+          topLeftBlockRef.current,
+          credentialsClusterRef.current,
+          heroPortraitCardRef.current,
+          bottomBarRef.current,
+        ],
+        { autoAlpha: 1, y: 0 }
+      );
+      gsap.set(bottomDividerRef.current, { scaleX: 1 });
       onPreloaderComplete();
       return;
     }
@@ -82,6 +147,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
 
       gsap.set(curtainGreenRef.current, { yPercent: 100 });
       gsap.set(curtainSandRef.current, { yPercent: 100 });
+      gsap.set(centerPortalWrapRef.current, { autoAlpha: 0 });
 
       gsap.set(
         [
@@ -91,7 +157,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
           bottomBarRef.current,
         ],
         {
-          opacity: 0,
+          autoAlpha: 0,
           y: 26,
         }
       );
@@ -188,7 +254,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
         'transitionStart+=0.98'
       );
 
-      // Step D: Reveal Hero editorial elements smoothly
+      // Step D: Reveal Hero editorial elements smoothly AFTER preloader curtains open
       tl.to(
         bottomDividerRef.current,
         {
@@ -199,6 +265,14 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
         'transitionStart+=1.42'
       );
 
+      tl.call(
+        () => {
+          setTypingActive(true);
+        },
+        [],
+        'transitionStart+=1.48'
+      );
+
       tl.to(
         [
           topLeftBlockRef.current,
@@ -207,7 +281,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
           bottomBarRef.current,
         ],
         {
-          opacity: 1,
+          autoAlpha: 1,
           y: 0,
           duration: 1.0,
           stagger: 0.1,
@@ -221,7 +295,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
       document.body.style.overflow = originalOverflow;
       ctx.revert();
     };
-  }, [onPreloaderComplete]);
+  }, [onPreloaderComplete, quoteText.length]);
 
   // 2. Scroll-linked pinned Hero animation (Title rises to center, splits, central photo expands)
   useEffect(() => {
@@ -272,7 +346,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
           bottomBarRef.current,
         ],
         {
-          opacity: 0,
+          autoAlpha: 0,
           y: -28,
           duration: 0.32,
           ease: 'power2.inOut',
@@ -294,7 +368,7 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
       scrollTl.to(
         heroPortraitCardRef.current,
         {
-          opacity: 0,
+          autoAlpha: 0,
           y: -45,
           scale: 0.92,
           duration: 0.35,
@@ -390,6 +464,8 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
     return () => ctx.revert();
   }, [preloaderDone]);
 
+  const isTypingComplete = typedCount >= quoteText.length;
+
   return (
     <section
       ref={sectionRef}
@@ -452,7 +528,6 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
           />
           <div className="hero-portal-vignette" />
           <div ref={centerPortalCaptionRef} className="hero-portal-caption">
-            <span className="hero-portal-caption__index">01 / 02</span>
             <p className="hero-portal-caption__text">
               “A palavra ocupa um lugar central na construção de novos sentidos.”
             </p>
@@ -464,14 +539,62 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
       <div className="hero-editorial-container">
         {/* Top Row: Upper-left presentation text + Asymmetric Editorial Portrait + Credentials */}
         <div className="hero-upper-stage">
-          {/* Upper-left presentation text */}
+          {/* Upper-left presentation text with Typewriter Effect */}
           <div ref={topLeftBlockRef} className="hero-top-left">
             <div className="hero-eyebrow">
               <span className="hero-eyebrow__dot" />
               <span>ORIENTAÇÃO LACANIANA</span>
             </div>
-            <p className="hero-intro-quote">
-              {LUDMILA_CONTENT.hero.upperLeftQuote}
+            <p
+              className="hero-intro-quote hero-typewriter"
+              aria-label={quoteText}
+            >
+              {typedCount === 0 && typingActive && (
+                <span
+                  className="typewriter-cursor is-blinking"
+                  aria-hidden="true"
+                />
+              )}
+              {quoteTokens.map((token, wordIdx) => (
+                <React.Fragment key={wordIdx}>
+                  <span className="typewriter-word" aria-hidden="true">
+                    {token.chars.map((c) => {
+                      const isTyped = c.index < typedCount;
+                      const isCursorHere = c.index === typedCount - 1;
+                      return (
+                        <React.Fragment key={c.index}>
+                          <span
+                            className={`typewriter-char ${
+                              isTyped ? 'is-typed' : ''
+                            }`}
+                          >
+                            {c.char}
+                          </span>
+                          {isCursorHere && (
+                            <span
+                              className={`typewriter-cursor ${
+                                isTypingComplete ? 'is-complete' : ''
+                              }`}
+                              aria-hidden="true"
+                            />
+                          )}
+                        </React.Fragment>
+                      );
+                    })}
+                  </span>
+                  {token.hasSpace && token.spaceIndex !== null && (
+                    <span className="typewriter-space" aria-hidden="true">
+                      {' '}
+                      {token.spaceIndex === typedCount - 1 && (
+                        <span
+                          className="typewriter-cursor"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </span>
+                  )}
+                </React.Fragment>
+              ))}
             </p>
           </div>
 
@@ -490,7 +613,10 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
               </p>
             </div>
 
-            <div ref={heroPortraitCardRef} className="hero-portrait-composition">
+            <div
+              ref={heroPortraitCardRef}
+              className="hero-portrait-composition"
+            >
               <div className="hero-portrait-frame">
                 <img
                   src={LUDMILA_CONTENT.assets.photoStanding}

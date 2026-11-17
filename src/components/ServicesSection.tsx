@@ -153,9 +153,13 @@ export const ServicesSection: React.FC = () => {
             <span className="lacanian-concept-card__badge">
               FUNDAMENTOS DA CLÍNICA
             </span>
-            <blockquote className="lacanian-concept-card__quote">
-              {LUDMILA_CONTENT.services.quote}
-            </blockquote>
+            <SplitScrollText
+              as="blockquote"
+              text={LUDMILA_CONTENT.services.quote}
+              className="lacanian-concept-card__quote"
+              startRatio={0.85}
+              endRatio={0.38}
+            />
             <p className="lacanian-concept-card__author">
               Psicanálise Lacaniana · A Palavra e o Inconsciente
             </p>

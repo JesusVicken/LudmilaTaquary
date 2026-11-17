@@ -11,103 +11,54 @@ export const AboutSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const photoWrapperRef = useRef<HTMLDivElement | null>(null);
   const photoImgRef = useRef<HTMLImageElement | null>(null);
-  const quoteBlockRef = useRef<HTMLDivElement | null>(null);
   const infoFooterRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    const photoWrap = photoWrapperRef.current;
+    const photoImg = photoImgRef.current;
+    if (!section || !photoWrap || !photoImg) return;
 
     const prefersReducedMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
 
     if (prefersReducedMotion) {
-      if (photoImgRef.current) {
-        gsap.set(photoImgRef.current, { filter: 'blur(0px)', scale: 1 });
-      }
+      photoImg.style.filter = 'blur(0px)';
+      photoImg.style.transform = 'scale(1)';
       return;
     }
 
-    const ctx = gsap.context(() => {
-      // 1. Photograph blur-to-sharp progressive discovery on scroll
-      if (photoImgRef.current && photoWrapperRef.current) {
-        gsap.fromTo(
-          photoImgRef.current,
-          {
-            filter: 'blur(16px)',
-            scale: 1.08,
-          },
-          {
-            filter: 'blur(0px)',
-            scale: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: photoWrapperRef.current,
-              start: 'top 88%',
-              end: 'center 46%',
-              scrub: 0.75,
-            },
-          }
-        );
+    const updatePhotoFocus = () => {
+      const rect = photoWrap.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
+      const startY = vh * 0.9;
+      const endY = vh * 0.38;
 
-        // Subtle vertical parallax on the editorial photo frame
-        gsap.fromTo(
-          photoWrapperRef.current,
-          { y: 36 },
-          {
-            y: -18,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: photoWrapperRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.9,
-            },
-          }
-        );
-      }
+      const rawProgress = (startY - rect.top) / Math.max(startY - endY, 1);
+      const progress = Math.min(Math.max(rawProgress, 0), 1);
 
-      // 2. Featured quote block reveal
-      if (quoteBlockRef.current) {
-        gsap.fromTo(
-          quoteBlockRef.current,
-          { opacity: 0, y: 38 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: quoteBlockRef.current,
-              start: 'top 82%',
-              end: 'top 45%',
-              scrub: 0.6,
-            },
-          }
-        );
-      }
+      const blurPx = (1 - progress) * 14;
+      const scaleVal = 1.07 - progress * 0.07;
 
-      // 3. INFO + arrow footer reveal
-      if (infoFooterRef.current) {
-        gsap.fromTo(
-          infoFooterRef.current,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: infoFooterRef.current,
-              start: 'top 92%',
-            },
-          }
-        );
-      }
-    }, section);
+      photoImg.style.filter = `blur(${blurPx.toFixed(2)}px)`;
+      photoImg.style.transform = `scale(${scaleVal.toFixed(3)})`;
+    };
 
-    return () => ctx.revert();
+    updatePhotoFocus();
+
+    const trigger = ScrollTrigger.create({
+      onUpdate: updatePhotoFocus,
+    });
+
+    window.addEventListener('scroll', updatePhotoFocus, { passive: true });
+    window.addEventListener('resize', updatePhotoFocus);
+
+    return () => {
+      trigger.kill();
+      window.removeEventListener('scroll', updatePhotoFocus);
+      window.removeEventListener('resize', updatePhotoFocus);
+    };
   }, []);
 
   return (
@@ -139,8 +90,8 @@ export const AboutSection: React.FC = () => {
               as="h2"
               text={LUDMILA_CONTENT.about.highlightText}
               className="about-highlight-text"
-              triggerStart="top 84%"
-              triggerEnd="bottom 50%"
+              startRatio={0.86}
+              endRatio={0.34}
             />
 
             <div className="about-subtle-notes">
@@ -171,7 +122,6 @@ export const AboutSection: React.FC = () => {
               </div>
 
               <div className="about-photo-caption">
-                <span className="about-photo-caption__num">FIG. 02</span>
                 <span className="about-photo-caption__text">
                   Escuta clínica e singularidade — {LUDMILA_CONTENT.credentials.crp}
                 </span>
@@ -191,14 +141,30 @@ export const AboutSection: React.FC = () => {
               as="p"
               text={LUDMILA_CONTENT.about.mainText}
               className="about-main-serif-text"
-              triggerStart="top 85%"
-              triggerEnd="bottom 46%"
+              startRatio={0.86}
+              endRatio={0.34}
             />
           </div>
         </div>
 
-        {/* ═══ PART 3: Featured Quote (Special Visual Treatment & Generous Negative Space) ═══ */}
-        <div ref={quoteBlockRef} className="about-featured-quote-stage">
+        {/* ═══ PART 3: Featured Quote (Scroll-Linked Progressive Word Reveal like Reference Video) ═══ */}
+        <div className="about-featured-quote-stage">
+          <span className="about-featured-quote__top-mark" aria-hidden="true">
+            “
+          </span>
+
+          <SplitScrollText
+            as="blockquote"
+            text={LUDMILA_CONTENT.about.featuredQuoteClean}
+            className="about-featured-quote"
+            startRatio={0.84}
+            endRatio={0.35}
+          />
+
+          <p className="about-featured-quote__sub">
+            PSICANÁLISE DE ORIENTAÇÃO LACANIANA
+          </p>
+
           <div className="about-featured-quote-logo-wrap">
             <img
               src={LUDMILA_CONTENT.assets.logoTransparent}
@@ -206,20 +172,6 @@ export const AboutSection: React.FC = () => {
               className="about-original-logo"
             />
           </div>
-
-          <blockquote className="about-featured-quote">
-            <span className="about-featured-quote__mark" aria-hidden="true">
-              “
-            </span>
-            {LUDMILA_CONTENT.about.featuredQuoteClean}
-            <span className="about-featured-quote__mark" aria-hidden="true">
-              ”
-            </span>
-          </blockquote>
-
-          <p className="about-featured-quote__sub">
-            Psicanálise de Orientação Lacaniana
-          </p>
         </div>
 
         {/* ═══ PART 4: Bottom Identification 'INFO' + Arrow Indicating Navigation Continuity ═══ */}

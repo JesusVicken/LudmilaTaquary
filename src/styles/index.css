@@ -336,6 +336,8 @@ button {
   flex-direction: column;
   gap: 0.9rem;
   max-width: 390px;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-eyebrow {
@@ -366,9 +368,73 @@ button {
   color: var(--color-offwhite);
 }
 
+/* Editorial Typewriter Effect */
+.hero-typewriter {
+  position: relative;
+}
+
+.typewriter-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.typewriter-space {
+  display: inline;
+}
+
+.typewriter-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(2px);
+  transition:
+    opacity 0.12s ease-out,
+    transform 0.14s ease-out;
+}
+
+.typewriter-char.is-typed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.typewriter-cursor {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0.92em;
+  vertical-align: baseline;
+}
+
+.typewriter-cursor::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  bottom: -0.06em;
+  width: 1.5px;
+  height: 0.96em;
+  background-color: var(--color-sand-warm);
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(223, 210, 193, 0.45);
+}
+
+.typewriter-cursor.is-blinking::after,
+.typewriter-cursor.is-complete::after {
+  animation: editorialCaretBlink 1.05s steps(2, start) infinite;
+}
+
+@keyframes editorialCaretBlink {
+  0%,
+  49% {
+    opacity: 0.9;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 /* Asymmetric Cluster on the Right */
 .hero-asymmetric-cluster {
-   justify-self: end;
+  justify-self: end;
   display: flex;
   align-items: flex-end;
   gap: clamp(1.25rem, 2.6vw, 2.5rem);
@@ -383,6 +449,8 @@ button {
   gap: 0.3rem;
   padding-bottom: 0.65rem;
   max-width: 240px;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-credentials__role {
@@ -417,12 +485,24 @@ button {
   color: rgba(246, 241, 234, 0.84);
 }
 
+.hero-credentials__tag {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(234, 224, 213, 0.62);
+  margin-top: 0.25rem;
+}
+
 .hero-portrait-composition {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-portrait-frame {
@@ -517,6 +597,8 @@ button {
   );
   margin-bottom: clamp(0.85rem, 1.8vh, 1.35rem);
   will-change: transform, opacity;
+  transform: scaleX(0);
+  transform-origin: 0% 50%;
 }
 
 /* Three Areas Below the Line */
@@ -526,6 +608,8 @@ button {
   align-items: center;
   gap: 1.25rem;
   width: 100%;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-bottom-col {
@@ -697,6 +781,8 @@ button {
   pointer-events: none;
   padding: clamp(2rem, 5vw, 4.5rem);
   will-change: transform, opacity;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .hero-portal-frame {
@@ -988,7 +1074,7 @@ button {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 2.2rem;
+  gap: 1.75rem;
   background: radial-gradient(
     circle at 50% 50%,
     rgba(223, 210, 193, 0.52) 0%,
@@ -998,25 +1084,36 @@ button {
   border-bottom: 1px solid rgba(63, 80, 48, 0.14);
 }
 
+.about-featured-quote__top-mark {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 5vw, 4.6rem);
+  line-height: 0.5;
+  color: var(--color-taupe-earth);
+  opacity: 0.65;
+  user-select: none;
+  margin-bottom: 0.25rem;
+}
+
 .about-featured-quote-logo-wrap {
   display: flex;
   justify-content: center;
+  margin-top: 0.85rem;
 }
 
 .about-original-logo {
-  width: clamp(170px, 18vw, 240px);
+  width: clamp(160px, 16vw, 220px);
   height: auto;
   object-fit: contain;
 }
 
 .about-featured-quote {
-  max-width: 960px;
+  max-width: 920px;
   font-family: var(--font-serif);
-  font-size: clamp(2.15rem, 4.4vw, 4.25rem);
-  font-style: italic;
+  font-size: clamp(2.1rem, 4.1vw, 3.85rem);
+  font-style: normal;
   font-weight: 400;
-  line-height: 1.16;
-  color: var(--color-olive-primary);
+  line-height: 1.24;
+  color: var(--color-ink-dark);
 }
 
 .about-featured-quote__mark {
@@ -2351,6 +2448,222 @@ button {
 
   .faq-item__answer-inner {
     padding-left: clamp(1.25rem, 2.5vw, 1.85rem);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOATING WHATSAPP BUTTON
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.floating-whatsapp {
+  position: fixed;
+  right: clamp(1.25rem, 3vw, 2.5rem);
+  bottom: clamp(1.25rem, 3vh, 2.25rem);
+  z-index: 85;
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  pointer-events: none;
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.floating-whatsapp.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.floating-whatsapp__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #25d366;
+  color: #ffffff;
+  padding: 0.65rem 1.05rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(37, 211, 102, 0.38), 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease,
+    background-color 0.3s ease;
+  user-select: none;
+}
+
+.floating-whatsapp__link:hover {
+  background: #20bd5a;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 40px rgba(37, 211, 102, 0.52), 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.floating-whatsapp__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.floating-whatsapp__svg {
+  width: 24px;
+  height: 24px;
+}
+
+.floating-whatsapp__tooltip {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.floating-whatsapp__tooltip-title {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.floating-whatsapp__tooltip-sub {
+  font-family: var(--font-sans);
+  font-size: 0.64rem;
+  font-weight: 400;
+  opacity: 0.92;
+  white-space: nowrap;
+}
+
+/* Pulsing rings */
+.floating-whatsapp__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #25d366;
+  opacity: 0.45;
+  z-index: -1;
+  animation: waPulse 3s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+
+.floating-whatsapp__pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(37, 211, 102, 0.6);
+  opacity: 0;
+  z-index: -2;
+  animation: waRing 3s cubic-bezier(0.24, 0, 0.38, 1) infinite 0.75s;
+}
+
+@keyframes waPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}
+
+@keyframes waRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.28);
+    opacity: 0;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCROLL-DRIVEN KEYWORDS MARQUEE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.scroll-keywords-marquee {
+  position: relative;
+  z-index: 32;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    #1e2717 0%,
+    #29361e 50%,
+    #1e2717 100%
+  );
+  border-top: 1px solid rgba(234, 224, 213, 0.16);
+  border-bottom: 1px solid rgba(234, 224, 213, 0.16);
+  padding: clamp(1.15rem, 2.3vh, 1.85rem) 0;
+  user-select: none;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.18), inset 0 -2px 10px rgba(0, 0, 0, 0.18);
+}
+
+.scroll-keywords-marquee__viewport {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.scroll-keywords-marquee__track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.scroll-keywords-marquee__group {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  padding-right: clamp(1.25rem, 2.5vw, 2.5rem);
+}
+
+.scroll-keywords-marquee__word {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.4vw, 2.25rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--color-beige-soft);
+  transition: color 0.3s ease;
+}
+
+.scroll-keywords-marquee__word:hover {
+  color: #ffffff;
+}
+
+.scroll-keywords-marquee__separator {
+  color: var(--color-sand-warm);
+  opacity: 0.45;
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+@media (max-width: 767px) {
+  .floating-whatsapp {
+    right: 1rem;
+    bottom: 4.8rem;
+  }
+
+  .floating-whatsapp__tooltip {
+    display: none;
+  }
+
+  .floating-whatsapp__link {
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    justify-content: center;
   }
 }
 
