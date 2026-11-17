@@ -4,13 +4,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { HeroExperience } from './components/HeroExperience';
 import { AboutSection } from './components/AboutSection';
-import { ProgressSidebar } from './components/ProgressSidebar';
+import { ServicesSection } from './components/ServicesSection';
+import { TalksSection } from './components/TalksSection';
+import { FaqSection } from './components/FaqSection';
+import { ContactSection } from './components/ContactSection';
+import { ProgressSidebar, SectionKey, SECTIONS } from './components/ProgressSidebar';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const App: React.FC = () => {
   const [preloaderComplete, setPreloaderComplete] = useState(false);
-  const [activeSection, setActiveSection] = useState<'01' | '02'>('01');
+  const [activeSection, setActiveSection] = useState<SectionKey>('01');
   const [scrollProgress, setScrollProgress] = useState(0);
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -49,23 +53,40 @@ export const App: React.FC = () => {
     }
   }, []);
 
+  // Monitor continuous scroll progress and detect active section
   useEffect(() => {
     const updateScrollMetrics = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+      const progress =
+        docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
       setScrollProgress(progress);
 
-      const aboutEl = document.getElementById('sobre');
-      if (aboutEl) {
-        const rect = aboutEl.getBoundingClientRect();
-        if (rect.top <= window.innerHeight * 0.48) {
-          setActiveSection('02');
-        } else {
-          setActiveSection('01');
+      // Section positions detection
+      const sectionIds: { key: SectionKey; id: string }[] = [
+        { key: '01', id: 'inicio' },
+        { key: '02', id: 'sobre' },
+        { key: '03', id: 'servicos' },
+        { key: '04', id: 'palestras' },
+        { key: '05', id: 'faq' },
+        { key: '06', id: 'contato' },
+      ];
+
+      const threshold = window.innerHeight * 0.45;
+      let currentSection: SectionKey = '01';
+
+      for (const item of sectionIds) {
+        const el = document.getElementById(item.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= threshold) {
+            currentSection = item.key;
+          }
         }
       }
+
+      setActiveSection(currentSection);
     };
 
     window.addEventListener('scroll', updateScrollMetrics, { passive: true });
@@ -78,23 +99,38 @@ export const App: React.FC = () => {
     };
   }, [preloaderComplete]);
 
-  const handleNavigate = useCallback((section: '01' | '02') => {
-    const targetId = section === '01' ? '#inicio' : '#sobre';
-    const targetEl = document.querySelector(targetId) as HTMLElement | null;
+  const scrollToTarget = useCallback((targetSelector: string) => {
+    if (targetSelector === '#inicio' || targetSelector === 'top') {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { duration: 1.3 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+
+    const targetEl = document.querySelector(targetSelector) as HTMLElement | null;
     if (!targetEl) return;
 
     if (lenisRef.current) {
-      lenisRef.current.scrollTo(section === '01' ? 0 : targetEl, {
+      lenisRef.current.scrollTo(targetEl, {
         duration: 1.35,
+        offset: -20,
       });
     } else {
-      if (section === '01') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        targetEl.scrollIntoView({ behavior: 'smooth' });
-      }
+      targetEl.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
+
+  const handleNavigateBySectionKey = useCallback(
+    (sectionKey: SectionKey) => {
+      const found = SECTIONS.find((s) => s.key === sectionKey);
+      if (found) {
+        scrollToTarget(found.targetId);
+      }
+    },
+    [scrollToTarget]
+  );
 
   return (
     <div className="site-shell">
@@ -102,15 +138,23 @@ export const App: React.FC = () => {
         activeSection={activeSection}
         scrollProgress={scrollProgress}
         visible={preloaderComplete}
-        onNavigate={handleNavigate}
+        onNavigate={handleNavigateBySectionKey}
       />
 
       <main className="site-main">
         <HeroExperience
           onPreloaderComplete={handlePreloaderComplete}
-          onNavigateAbout={() => handleNavigate('02')}
+          onNavigateAbout={() => scrollToTarget('#sobre')}
+          onNavigateSection={scrollToTarget}
         />
         <AboutSection />
+        <ServicesSection />
+        <TalksSection />
+        <FaqSection />
+        <ContactSection
+          onScrollToTop={() => scrollToTarget('#inicio')}
+          onNavigate={scrollToTarget}
+        />
       </main>
     </div>
   );

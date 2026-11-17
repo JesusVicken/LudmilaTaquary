@@ -10,11 +10,13 @@ gsap.registerPlugin(ScrollTrigger);
 interface HeroExperienceProps {
   onPreloaderComplete: () => void;
   onNavigateAbout: () => void;
+  onNavigateSection?: (targetId: string) => void;
 }
 
 export const HeroExperience: React.FC<HeroExperienceProps> = ({
   onPreloaderComplete,
   onNavigateAbout,
+  onNavigateSection,
 }) => {
   const sectionRef = useRef<HTMLElement | null>(null);
   const preloaderBlackRef = useRef<HTMLDivElement | null>(null);
@@ -572,7 +574,16 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
               className="hero-bottom-col hero-bottom-col--right"
               aria-label="Navegação principal e contato"
             >
-              <a href="#inicio" className="hero-nav-link">
+              <a
+                href="#inicio"
+                onClick={(e) => {
+                  if (onNavigateSection) {
+                    e.preventDefault();
+                    onNavigateSection('#inicio');
+                  }
+                }}
+                className="hero-nav-link"
+              >
                 Início
               </a>
               <a
@@ -584,6 +595,42 @@ export const HeroExperience: React.FC<HeroExperienceProps> = ({
                 className="hero-nav-link"
               >
                 Sobre
+              </a>
+              <a
+                href="#servicos"
+                onClick={(e) => {
+                  if (onNavigateSection) {
+                    e.preventDefault();
+                    onNavigateSection('#servicos');
+                  }
+                }}
+                className="hero-nav-link"
+              >
+                Serviços
+              </a>
+              <a
+                href="#palestras"
+                onClick={(e) => {
+                  if (onNavigateSection) {
+                    e.preventDefault();
+                    onNavigateSection('#palestras');
+                  }
+                }}
+                className="hero-nav-link"
+              >
+                Palestras
+              </a>
+              <a
+                href="#faq"
+                onClick={(e) => {
+                  if (onNavigateSection) {
+                    e.preventDefault();
+                    onNavigateSection('#faq');
+                  }
+                }}
+                className="hero-nav-link"
+              >
+                Dúvidas
               </a>
               <a
                 href={LUDMILA_CONTENT.contact.whatsappUrl}
