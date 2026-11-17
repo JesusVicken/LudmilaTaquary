@@ -66,10 +66,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       className="contact-section"
       aria-label="Informações de contato e agendamento"
     >
+      {/* Subtle atmospheric background of the clinical office */}
+      <div
+        className="contact-office-bg"
+        style={{ backgroundImage: `url(${LUDMILA_CONTENT.assets.photoOffice})` }}
+        aria-hidden="true"
+      />
+
       <div className="contact-container">
         {/* Section Header */}
         <div className="section-header-editorial section-header-editorial--center">
-          <div className="section-tag-pill">
+          <div className="section-tag-pill section-tag-pill--light">
             <span className="section-tag-pill__dot" />
             <span>{LUDMILA_CONTENT.contact.tag}</span>
           </div>

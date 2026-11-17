@@ -1281,6 +1281,17 @@ button {
   background-color: var(--color-olive-primary);
 }
 
+.section-tag-pill--light {
+  color: var(--color-offwhite);
+  background-color: rgba(234, 224, 213, 0.14);
+  border-color: rgba(234, 224, 213, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.section-tag-pill--light .section-tag-pill__dot {
+  background-color: var(--color-sand-warm);
+}
+
 .section-headline-serif {
   font-family: var(--font-serif);
   font-size: clamp(2.35rem, 4.4vw, 4.1rem);
@@ -1486,6 +1497,62 @@ button {
   background-color: var(--color-olive-primary);
   color: var(--color-offwhite);
   border-color: var(--color-olive-primary);
+}
+
+/* Panoramic Clinical Office Showcase + Lacanian Concept Card */
+.clinical-showcase-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.clinical-office-banner {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(63, 80, 48, 0.2);
+  box-shadow: 0 24px 64px rgba(36, 48, 26, 0.11);
+  background-color: #ebe1d4;
+}
+
+.clinical-office-banner__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.clinical-office-banner:hover .clinical-office-banner__img {
+  transform: scale(1.025);
+}
+
+.clinical-office-banner__badge {
+  position: absolute;
+  right: clamp(1rem, 2.2vw, 1.85rem);
+  bottom: clamp(1rem, 2.2vw, 1.65rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(31, 40, 24, 0.76);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(234, 224, 213, 0.26);
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-offwhite);
+}
+
+.clinical-office-banner__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-sand-warm);
 }
 
 /* Lacanian Concept Card */
@@ -2072,6 +2139,7 @@ button {
   position: relative;
   z-index: 30;
   width: 100%;
+  overflow: hidden;
   background: linear-gradient(
     180deg,
     #1f2818 0%,
@@ -2084,7 +2152,33 @@ button {
   border-top: 1px solid rgba(234, 224, 213, 0.16);
 }
 
+.contact-office-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.14;
+  mix-blend-mode: luminosity;
+  filter: contrast(1.05) saturate(0.85);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-office-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(23, 31, 17, 0.35) 0%,
+    rgba(14, 20, 11, 0.92) 85%
+  );
+}
+
 .contact-container {
+  position: relative;
+  z-index: 2;
   max-width: 1320px;
   margin: 0 auto;
   display: flex;

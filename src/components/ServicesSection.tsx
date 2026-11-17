@@ -147,33 +147,47 @@ export const ServicesSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Lacanian Clinical Concept Card */}
-        <div ref={lacanBlockRef} className="lacanian-concept-card">
-          <div className="lacanian-concept-card__left">
-            <span className="lacanian-concept-card__badge">
-              FUNDAMENTOS DA CLÍNICA
-            </span>
-            <SplitScrollText
-              as="blockquote"
-              text={LUDMILA_CONTENT.services.quote}
-              className="lacanian-concept-card__quote"
-              startRatio={0.85}
-              endRatio={0.38}
+        {/* Panoramic Clinical Office Showcase + Lacanian Concept Card */}
+        <div ref={lacanBlockRef} className="clinical-showcase-wrapper">
+          <div className="clinical-office-banner">
+            <img
+              src={LUDMILA_CONTENT.assets.photoOffice}
+              alt="Espaço de acolhimento e escuta clínica — Ludmila Taquary Psicóloga e Psicanalista"
+              className="clinical-office-banner__img"
             />
-            <p className="lacanian-concept-card__author">
-              Psicanálise Lacaniana · A Palavra e o Inconsciente
-            </p>
+            <div className="clinical-office-banner__badge">
+              <span className="clinical-office-banner__dot" />
+              <span>AMBIENTE DE ESCUTA, ACOLHIMENTO &amp; SINGULARIDADE</span>
+            </div>
           </div>
 
-          <div className="lacanian-concept-card__right">
-            <p className="lacanian-concept-card__text">
-              {LUDMILA_CONTENT.services.lacanianConcept}
-            </p>
-            <div className="lacanian-concept-card__meta">
-              <span className="lacanian-concept-card__dot" />
-              <span>
-                Atendimento 100% online para todo o Brasil e exterior com sigilo absoluto
+          <div className="lacanian-concept-card">
+            <div className="lacanian-concept-card__left">
+              <span className="lacanian-concept-card__badge">
+                FUNDAMENTOS DA CLÍNICA
               </span>
+              <SplitScrollText
+                as="blockquote"
+                text={LUDMILA_CONTENT.services.quote}
+                className="lacanian-concept-card__quote"
+                startRatio={0.85}
+                endRatio={0.38}
+              />
+              <p className="lacanian-concept-card__author">
+                Psicanálise Lacaniana · A Palavra e o Inconsciente
+              </p>
+            </div>
+
+            <div className="lacanian-concept-card__right">
+              <p className="lacanian-concept-card__text">
+                {LUDMILA_CONTENT.services.lacanianConcept}
+              </p>
+              <div className="lacanian-concept-card__meta">
+                <span className="lacanian-concept-card__dot" />
+                <span>
+                  Atendimento 100% online para todo o Brasil e exterior com sigilo absoluto
+                </span>
+              </div>
             </div>
           </div>
         </div>

@@ -206,5 +206,6 @@ export const LUDMILA_CONTENT = {
     photoStanding: '/assets/fotos/ludmila-1.jpg',
     photoArmchair: '/assets/fotos/ludmila-2.jpg',
     photoDesk: '/assets/fotos/ludmila-3.jpg',
+    photoOffice: '/assets/fotos/consultorio-ludmila.jpg',
   },
 } as const;
