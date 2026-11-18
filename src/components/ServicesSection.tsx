@@ -170,8 +170,6 @@ export const ServicesSection: React.FC = () => {
                 as="blockquote"
                 text={LUDMILA_CONTENT.services.quote}
                 className="lacanian-concept-card__quote"
-                startRatio={0.85}
-                endRatio={0.38}
               />
               <p className="lacanian-concept-card__author">
                 Psicanálise Lacaniana · A Palavra e o Inconsciente

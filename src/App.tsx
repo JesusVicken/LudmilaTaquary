@@ -13,6 +13,8 @@ import { ProgressSidebar, SectionKey, SECTIONS } from './components/ProgressSide
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 gsap.registerPlugin(ScrollTrigger);
+// Avoid layout jumps when the mobile browser address bar shows/hides
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 export const App: React.FC = () => {
   const [preloaderComplete, setPreloaderComplete] = useState(false);

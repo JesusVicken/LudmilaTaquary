@@ -2771,3 +2771,646 @@ button {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE-FIRST EXPERIENCE LAYER (phones & small tablets)
+   Same identity (palette, typography, motion) — layout tuned for touch.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Prevent sideways scroll without turning <body> into a scroll container (iOS) */
+@supports (overflow-x: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch devices: no hover lifts that get "stuck" after a tap */
+@media (hover: none) {
+  .service-card:hover,
+  .contact-channel-card:hover,
+  .talks-custom-card__btn:hover,
+  .floating-whatsapp__link:hover {
+    transform: none;
+  }
+
+  .clinical-office-banner:hover .clinical-office-banner__img,
+  .hero-portrait-frame:hover .hero-portrait-img {
+    transform: none;
+  }
+}
+
+/* ─── Tablet ─────────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .about-asymmetric-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .about-right-column {
+    justify-content: center;
+  }
+
+  .hero-bottom-bar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .hero-bottom-col--center {
+    display: none;
+  }
+
+  .hero-nav-link {
+    display: none;
+  }
+}
+
+/* ─── Phones ─────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Shared rhythm */
+  .section-headline-serif {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    line-height: 1.12;
+  }
+
+  .section-subheadline {
+    font-size: 0.95rem;
+    line-height: 1.62;
+  }
+
+  .section-header-editorial {
+    gap: 0.85rem;
+  }
+
+  /* Progress indicator → compact pill bottom-left showing only the current section */
+  .progress-sidebar {
+    left: 1rem;
+    right: auto;
+    top: auto;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+    max-width: none;
+    overflow: visible;
+    padding: 0.5rem 0.9rem;
+    background: rgba(24, 32, 17, 0.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 28px rgba(10, 14, 7, 0.28);
+  }
+
+  .progress-sidebar__step {
+    display: none;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    padding: 0;
+  }
+
+  .progress-sidebar__step.is-active {
+    display: inline-flex;
+  }
+
+  /* WhatsApp aligned on the same baseline, respecting the iPhone home indicator */
+  .floating-whatsapp {
+    right: 1rem;
+    bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+
+  .floating-whatsapp__link {
+    width: 54px;
+    height: 54px;
+  }
+
+  /* ── HERO ── */
+  .hero-section {
+    height: 100vh;
+    height: 100svh;
+    min-height: 620px;
+  }
+
+  .hero-editorial-container {
+    padding: calc(1.5rem + env(safe-area-inset-top)) 1.25rem
+      calc(1.25rem + env(safe-area-inset-bottom));
+  }
+
+  .hero-upper-stage {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding-top: 0;
+  }
+
+  .hero-top-left {
+    max-width: 92%;
+    gap: 0.75rem;
+  }
+
+  .hero-intro-quote {
+    font-size: 1.32rem;
+    line-height: 1.32;
+  }
+
+  .hero-asymmetric-cluster {
+    justify-self: stretch;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  .hero-credentials-card {
+    align-items: flex-start;
+    text-align: left;
+    max-width: 52%;
+    padding-bottom: 1.6rem;
+  }
+
+  .hero-credentials__role {
+    font-size: 1.2rem;
+  }
+
+  .hero-credentials__online {
+    font-size: 0.8rem;
+  }
+
+  .hero-portrait-composition {
+    gap: 0.4rem;
+  }
+
+  .hero-portrait-frame {
+    width: 40vw;
+    max-width: 170px;
+  }
+
+  .hero-portrait-tag {
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+    text-align: right;
+    max-width: 40vw;
+  }
+
+  .hero-monumental-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    line-height: 0.92;
+  }
+
+  .hero-title-word--sans {
+    font-size: 15vw;
+    letter-spacing: 0.02em;
+  }
+
+  .hero-title-word--serif {
+    font-size: 16.5vw;
+    align-self: flex-end;
+  }
+
+  .hero-full-divider {
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-bottom-bar {
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+  }
+
+  .hero-brand-logo {
+    height: 34px;
+  }
+
+  .hero-bottom-id__primary {
+    font-size: 0.66rem;
+  }
+
+  .hero-bottom-id__secondary {
+    font-size: 0.58rem;
+  }
+
+  .hero-bottom-col--right {
+    justify-content: flex-end;
+    gap: 0;
+  }
+
+  .hero-whatsapp-cta {
+    padding: 0.6rem 0.95rem;
+    font-size: 0.62rem;
+  }
+
+  .hero-portal-frame {
+    width: 90vw;
+    height: 62svh;
+    border-radius: 10px;
+  }
+
+  .hero-portal-img {
+    object-position: 68% center;
+  }
+
+  .hero-portal-caption {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-portal-caption__text {
+    font-size: 1.1rem;
+  }
+
+  /* ── 02 · SOBRE (Apresentação) ── */
+  .about-section {
+    padding: 4.5rem 1.25rem 5rem;
+  }
+
+  .about-container {
+    gap: 4rem;
+  }
+
+  .about-top-meta {
+    gap: 0.85rem;
+  }
+
+  .about-section-crp {
+    display: none;
+  }
+
+  .about-asymmetric-grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  /* Photo first, large and sharp — portrait cover look */
+  .about-right-column {
+    order: -1;
+    justify-content: stretch;
+  }
+
+  .about-photo-editorial-wrap {
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  .about-photo-frame {
+    aspect-ratio: 4 / 5;
+    border-radius: 14px;
+    box-shadow: 0 22px 50px rgba(36, 48, 26, 0.16);
+  }
+
+  .about-photo-img {
+    object-position: center 22%;
+    filter: none;
+  }
+
+  .about-photo-caption {
+    justify-content: flex-start;
+    font-size: 0.6rem;
+  }
+
+  .about-left-column {
+    gap: 1.5rem;
+  }
+
+  /* Readable editorial text: left aligned, comfortable measure, no "scroll" shape */
+  .about-highlight-text {
+    font-size: 1.75rem;
+    line-height: 1.3;
+    text-align: left;
+    letter-spacing: 0;
+  }
+
+  .about-subtle-notes {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+    padding-top: 1.25rem;
+  }
+
+  .about-note-item__value {
+    font-size: 0.92rem;
+  }
+
+  .about-center-editorial {
+    padding: 0;
+  }
+
+  .about-center-editorial__inner {
+    align-items: flex-start;
+    text-align: left;
+    gap: 1rem;
+  }
+
+  .about-main-serif-text {
+    font-size: 1.42rem;
+    line-height: 1.5;
+  }
+
+  .about-featured-quote-stage {
+    padding: 3.5rem 0.25rem;
+    gap: 1.25rem;
+    margin: 0;
+  }
+
+  .about-featured-quote {
+    font-size: 1.85rem;
+    line-height: 1.28;
+  }
+
+  .about-featured-quote__top-mark {
+    font-size: 3.4rem;
+  }
+
+  .about-original-logo {
+    width: 150px;
+  }
+
+  .about-info-row {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 1.1rem;
+  }
+
+  .about-info-left,
+  .about-info-right {
+    justify-content: center;
+  }
+
+  .about-info-meta {
+    font-size: 0.66rem;
+    line-height: 1.6;
+  }
+
+  /* ── Marquee ── */
+  .scroll-keywords-marquee {
+    padding: 1rem 0;
+  }
+
+  .scroll-keywords-marquee__word {
+    font-size: 1.4rem;
+  }
+
+  /* ── 03 · SERVIÇOS ── */
+  .services-container {
+    gap: 2.75rem;
+  }
+
+  .services-grid {
+    gap: 1.1rem;
+  }
+
+  .service-card {
+    padding: 1.5rem 1.35rem;
+    border-radius: 14px;
+  }
+
+  .service-card__title {
+    font-size: 1.55rem;
+  }
+
+  .service-card__desc,
+  .service-card__list-item {
+    font-size: 0.9rem;
+  }
+
+  .service-card__cta {
+    padding: 0.85rem 1.1rem;
+  }
+
+  .clinical-office-banner {
+    border-radius: 14px;
+  }
+
+  .clinical-office-banner__img {
+    aspect-ratio: 4 / 3;
+    object-position: 28% center;
+  }
+
+  .clinical-office-banner__badge {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    justify-content: center;
+    font-size: 0.52rem;
+    letter-spacing: 0.12em;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+  }
+
+  .lacanian-concept-card {
+    padding: 1.75rem 1.35rem;
+    border-radius: 14px;
+    gap: 1.5rem;
+  }
+
+  .lacanian-concept-card__quote {
+    font-size: 1.7rem;
+  }
+
+  .lacanian-concept-card__text {
+    font-size: 1.12rem;
+  }
+
+  .lacanian-concept-card__meta {
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .lacanian-concept-card__dot {
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  /* ── 04 · PALESTRAS ── */
+  .talks-container {
+    gap: 2.75rem;
+  }
+
+  .talks-modalities-note {
+    align-items: flex-start;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .talks-modalities-dot {
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  .talks-grid {
+    gap: 0.85rem;
+  }
+
+  .talk-item-card {
+    padding: 1.15rem;
+    border-radius: 14px;
+  }
+
+  .talk-item-card__header {
+    gap: 0.85rem;
+  }
+
+  .talk-item-card__icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .talk-item-card__title {
+    font-size: 1.22rem;
+  }
+
+  .talk-item-card__expandable.is-open {
+    max-height: 520px;
+  }
+
+  .talk-item-card__meta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .talk-item-card__target {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .talk-item-card__cta {
+    justify-content: center;
+    padding: 0.8rem 1rem;
+  }
+
+  .talks-custom-card {
+    padding: 1.75rem 1.35rem;
+    border-radius: 14px;
+  }
+
+  .talks-custom-card__right {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .talks-custom-card__btn {
+    justify-content: center;
+    padding: 0.95rem 1.2rem;
+  }
+
+  .talks-custom-card__schedule-info {
+    text-align: center;
+  }
+
+  /* ── 05 · FAQ ── */
+  .faq-accordion {
+    gap: 0.6rem;
+  }
+
+  .faq-item {
+    border-radius: 14px;
+  }
+
+  .faq-item__trigger {
+    padding: 1.1rem 1.15rem;
+    gap: 0.85rem;
+  }
+
+  .faq-item__question {
+    font-size: 1.15rem;
+  }
+
+  .faq-item__content.is-expanded {
+    max-height: 600px;
+  }
+
+  .faq-item__answer-inner {
+    padding: 0.9rem 1.15rem 1.25rem;
+  }
+
+  .faq-footer-help {
+    padding: 1.35rem;
+    border-radius: 14px;
+  }
+
+  .faq-footer-help__btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.2rem;
+  }
+
+  /* ── 06 · CONTATO ── */
+  .contact-section {
+    padding-bottom: calc(6.5rem + env(safe-area-inset-bottom));
+  }
+
+  .contact-container {
+    gap: 3rem;
+  }
+
+  .contact-channels-grid {
+    gap: 0.9rem;
+  }
+
+  .contact-channel-card {
+    padding: 1.5rem 1.35rem;
+    border-radius: 14px;
+    gap: 1.1rem;
+  }
+
+  .contact-channel-card__value {
+    font-size: 1.35rem;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-identity-banner {
+    align-items: center;
+    text-align: center;
+    padding: 2rem 0;
+    gap: 1.25rem;
+  }
+
+  .contact-back-to-top {
+    align-self: center;
+  }
+
+  .contact-footer-bar {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-footer-nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+  }
+
+  .contact-footer-link {
+    padding: 0.35rem 0;
+  }
+
+  .contact-footer-ethics {
+    text-align: center;
+  }
+}
+
+/* ─── Small phones (iPhone SE / Mini) ────────────────────────────────────── */
+@media (max-width: 380px) {
+  .hero-intro-quote {
+    font-size: 1.18rem;
+  }
+
+  .hero-credentials__role {
+    font-size: 1.05rem;
+  }
+
+  .about-highlight-text {
+    font-size: 1.55rem;
+  }
+
+  .about-main-serif-text {
+    font-size: 1.28rem;
+  }
+
+  .about-featured-quote {
+    font-size: 1.6rem;
+  }
+}

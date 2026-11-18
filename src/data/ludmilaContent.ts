@@ -25,7 +25,8 @@ export const LUDMILA_CONTENT = {
     featuredQuote:
       '“Escutar-se é abrir-se espaço ao que ainda não se sabe de si.”',
     featuredQuoteClean:
-      'Escutar-se é abrir-se espaço ao que ainda não se sabe de si.',
+      'Nossos atos falhados são atos que são bem sucedidos, nossas palavras que tropeçam são palavras que confessam',
+    featuredQuoteAuthor: 'J. Lacan',
     infoLabel: 'INFO',
   },
   services: {

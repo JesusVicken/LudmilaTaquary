@@ -32,13 +32,14 @@ export const AboutSection: React.FC = () => {
     const updatePhotoFocus = () => {
       const rect = photoWrap.getBoundingClientRect();
       const vh = window.innerHeight || 1;
-      const startY = vh * 0.9;
-      const endY = vh * 0.38;
+      const startY = vh * 0.95;
+      const endY = vh * (window.innerWidth < 768 ? 0.6 : 0.38);
 
       const rawProgress = (startY - rect.top) / Math.max(startY - endY, 1);
       const progress = Math.min(Math.max(rawProgress, 0), 1);
 
-      const blurPx = (1 - progress) * 14;
+      const isMobile = window.innerWidth < 768;
+      const blurPx = isMobile ? 0 : (1 - progress) * 14;
       const scaleVal = 1.07 - progress * 0.07;
 
       photoImg.style.filter = `blur(${blurPx.toFixed(2)}px)`;
@@ -90,8 +91,6 @@ export const AboutSection: React.FC = () => {
               as="h2"
               text={LUDMILA_CONTENT.about.highlightText}
               className="about-highlight-text"
-              startRatio={0.86}
-              endRatio={0.34}
             />
 
             <div className="about-subtle-notes">
@@ -141,8 +140,6 @@ export const AboutSection: React.FC = () => {
               as="p"
               text={LUDMILA_CONTENT.about.mainText}
               className="about-main-serif-text"
-              startRatio={0.86}
-              endRatio={0.34}
             />
           </div>
         </div>
@@ -157,12 +154,10 @@ export const AboutSection: React.FC = () => {
             as="blockquote"
             text={LUDMILA_CONTENT.about.featuredQuoteClean}
             className="about-featured-quote"
-            startRatio={0.84}
-            endRatio={0.35}
           />
 
           <p className="about-featured-quote__sub">
-            PSICANÁLISE DE ORIENTAÇÃO LACANIANA
+            — {LUDMILA_CONTENT.about.featuredQuoteAuthor}
           </p>
 
           <div className="about-featured-quote-logo-wrap">
