@@ -13,6 +13,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { LUDMILA_CONTENT } from '../data/ludmilaContent';
+import { OrganicShaderCanvas } from './OrganicShaderCanvas';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,19 +87,23 @@ export const TalksSection: React.FC = () => {
       className="talks-section"
       aria-label="Palestras e intervenções em grupo por Ludmila Taquary"
     >
+      {/* Living WebGL Organic Green Shader Background */}
+      <OrganicShaderCanvas className="talks-shader-bg" seedOffset={28} />
+      <div className="talks-ambient-overlay" aria-hidden="true" />
+
       <div className="talks-container">
         {/* Section Header */}
         <div className="section-header-editorial">
-          <div className="section-tag-pill">
+          <div className="section-tag-pill section-tag-pill--light">
             <span className="section-tag-pill__dot" />
             <span>{LUDMILA_CONTENT.talks.tag}</span>
           </div>
 
-          <h2 className="section-headline-serif">
+          <h2 className="section-headline-serif talks-headline">
             {LUDMILA_CONTENT.talks.title}
           </h2>
 
-          <p className="section-subheadline">
+          <p className="section-subheadline talks-subheadline">
             {LUDMILA_CONTENT.talks.subtitle}
           </p>
 

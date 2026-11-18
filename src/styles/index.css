@@ -1636,31 +1636,70 @@ button {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   04 — PALESTRAS & WORKSHOPS
+   04 — PALESTRAS & WORKSHOPS (Living WebGL Organic Green Shader Stage)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .talks-section {
   position: relative;
   z-index: 30;
   width: 100%;
-  background: linear-gradient(
-    180deg,
-    #e8ddce 0%,
-    #eee4d6 45%,
-    #ebe1d2 100%
-  );
-  color: var(--color-ink-dark);
-  padding: clamp(5rem, 11vh, 8.5rem) clamp(1.5rem, 4.5vw, 5rem);
+  overflow: hidden;
+  background-color: var(--color-olive-deep);
+  color: var(--color-offwhite);
+  padding: clamp(5.5rem, 11vh, 9rem) clamp(1.5rem, 4.5vw, 5rem);
   padding-left: clamp(4.5rem, 8vw, 8rem);
-  border-top: 1px solid rgba(63, 80, 48, 0.14);
+  border-top: 1px solid rgba(234, 224, 213, 0.18);
+  border-bottom: 1px solid rgba(234, 224, 213, 0.18);
+}
+
+.talks-shader-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.talks-ambient-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 16% 18%,
+      rgba(234, 224, 213, 0.08) 0%,
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 86% 78%,
+      rgba(16, 22, 11, 0.45) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(22, 30, 15, 0.34) 0%,
+      rgba(27, 37, 19, 0.16) 50%,
+      rgba(18, 25, 13, 0.48) 100%
+    );
 }
 
 .talks-container {
+  position: relative;
+  z-index: 2;
   max-width: 1320px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: clamp(3.5rem, 6.5vh, 5.5rem);
+}
+
+.talks-headline {
+  color: var(--color-offwhite);
+}
+
+.talks-subheadline {
+  color: rgba(246, 241, 234, 0.82);
 }
 
 .talks-modalities-note {
@@ -1671,7 +1710,7 @@ button {
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.08em;
-  color: var(--color-olive-primary);
+  color: var(--color-sand-warm);
   margin-top: 0.25rem;
 }
 
@@ -1679,7 +1718,7 @@ button {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: var(--color-olive-primary);
+  background-color: var(--color-sand-warm);
 }
 
 .talks-grid {
@@ -1690,26 +1729,30 @@ button {
 
 .talk-item-card {
   position: relative;
-  background-color: rgba(246, 241, 234, 0.85);
-  border: 1px solid rgba(63, 80, 48, 0.18);
-  border-radius: 6px;
+  background-color: rgba(24, 33, 17, 0.56);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(234, 224, 213, 0.2);
+  border-radius: 8px;
   padding: clamp(1.4rem, 2vw, 1.85rem);
   cursor: pointer;
   transition:
-    border-color 0.3s ease,
-    background-color 0.3s ease,
-    box-shadow 0.3s ease;
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
 }
 
 .talk-item-card:hover {
-  border-color: rgba(63, 80, 48, 0.42);
-  box-shadow: 0 16px 40px rgba(36, 48, 26, 0.08);
+  border-color: rgba(234, 224, 213, 0.44);
+  background-color: rgba(30, 41, 21, 0.68);
+  box-shadow: 0 20px 44px rgba(10, 14, 7, 0.32);
 }
 
 .talk-item-card.is-expanded {
-  border-color: var(--color-olive-primary);
-  background-color: #f7f3ed;
-  box-shadow: 0 20px 48px rgba(36, 48, 26, 0.1);
+  border-color: rgba(223, 210, 193, 0.58);
+  background-color: rgba(31, 42, 22, 0.8);
+  box-shadow: 0 24px 56px rgba(10, 14, 7, 0.42);
 }
 
 .talk-item-card__header {
@@ -1723,8 +1766,9 @@ button {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: rgba(63, 80, 48, 0.1);
-  color: var(--color-olive-primary);
+  background-color: rgba(234, 224, 213, 0.12);
+  border: 1px solid rgba(234, 224, 213, 0.18);
+  color: var(--color-sand-warm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1743,7 +1787,7 @@ button {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-olive-primary);
+  color: var(--color-sand-warm);
 }
 
 .talk-item-card__title {
@@ -1751,18 +1795,18 @@ button {
   font-size: clamp(1.25rem, 1.55vw, 1.55rem);
   font-weight: 500;
   line-height: 1.25;
-  color: var(--color-ink-dark);
+  color: var(--color-offwhite);
 }
 
 .talk-item-card__toggle-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid rgba(63, 80, 48, 0.2);
+  border: 1px solid rgba(234, 224, 213, 0.24);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-olive-primary);
+  color: var(--color-beige-soft);
 }
 
 .talk-item-card__chevron {
@@ -1788,14 +1832,14 @@ button {
   opacity: 1;
   margin-top: 1.25rem;
   padding-top: 1.25rem;
-  border-top: 1px solid rgba(63, 80, 48, 0.14);
+  border-top: 1px solid rgba(234, 224, 213, 0.16);
 }
 
 .talk-item-card__description {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   line-height: 1.6;
-  color: var(--color-ink-muted);
+  color: rgba(246, 241, 234, 0.82);
 }
 
 .talk-item-card__meta-row {
@@ -1819,21 +1863,21 @@ button {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--color-olive-primary);
+  color: var(--color-sand-warm);
 }
 
 .talk-item-card__target-value {
-  color: var(--color-ink-muted);
+  color: rgba(246, 241, 234, 0.76);
 }
 
 .talk-item-card__cta {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.45rem 0.9rem;
+  padding: 0.48rem 0.98rem;
   border-radius: 999px;
-  background-color: var(--color-olive-primary);
-  color: var(--color-offwhite);
+  background-color: var(--color-beige-soft);
+  color: var(--color-ink-dark);
   font-family: var(--font-sans);
   font-size: 0.68rem;
   font-weight: 600;
@@ -1841,11 +1885,12 @@ button {
   text-transform: uppercase;
   transition:
     background-color 0.3s ease,
+    color 0.3s ease,
     transform 0.3s ease;
 }
 
 .talk-item-card__cta:hover {
-  background-color: var(--color-olive-deep);
+  background-color: #ffffff;
   transform: translateY(-1px);
 }
 
@@ -1858,11 +1903,14 @@ button {
   padding: clamp(2.2rem, 4vw, 3.5rem);
   background: linear-gradient(
     135deg,
-    rgba(63, 80, 48, 0.12) 0%,
-    rgba(223, 210, 193, 0.55) 100%
+    rgba(28, 39, 20, 0.74) 0%,
+    rgba(50, 65, 36, 0.62) 100%
   );
-  border: 1px solid rgba(63, 80, 48, 0.24);
-  border-radius: 8px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(234, 224, 213, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(10, 14, 7, 0.35);
 }
 
 .talks-custom-card__left {
@@ -1877,7 +1925,7 @@ button {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-olive-primary);
+  color: var(--color-sand-warm);
 }
 
 .talks-custom-card__title {
@@ -1885,14 +1933,14 @@ button {
   font-size: clamp(1.45rem, 2.1vw, 2.1rem);
   font-weight: 500;
   line-height: 1.25;
-  color: var(--color-ink-dark);
+  color: var(--color-offwhite);
 }
 
 .talks-custom-card__text {
   font-family: var(--font-sans);
   font-size: 0.88rem;
   line-height: 1.58;
-  color: var(--color-ink-muted);
+  color: rgba(246, 241, 234, 0.82);
 }
 
 .talks-custom-card__right {
@@ -1906,10 +1954,10 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.45rem;
+  padding: 0.78rem 1.5rem;
   border-radius: 999px;
-  background-color: var(--color-olive-primary);
-  color: var(--color-offwhite);
+  background-color: var(--color-beige-soft);
+  color: var(--color-ink-dark);
   font-family: var(--font-sans);
   font-size: 0.76rem;
   font-weight: 600;
@@ -1921,7 +1969,7 @@ button {
 }
 
 .talks-custom-card__btn:hover {
-  background-color: var(--color-olive-deep);
+  background-color: #ffffff;
   transform: translateY(-2px);
 }
 
@@ -1929,7 +1977,7 @@ button {
   font-family: var(--font-sans);
   font-size: 0.7rem;
   letter-spacing: 0.08em;
-  color: var(--color-ink-muted);
+  color: rgba(234, 224, 213, 0.74);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -2152,17 +2200,26 @@ button {
   border-top: 1px solid rgba(234, 224, 213, 0.16);
 }
 
+.contact-shader-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.82;
+}
+
 .contact-office-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.14;
-  mix-blend-mode: luminosity;
+  opacity: 0.13;
+  mix-blend-mode: soft-light;
   filter: contrast(1.05) saturate(0.85);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 
 .contact-office-bg::after {
@@ -3185,19 +3242,8 @@ button {
   }
 
   .clinical-office-banner__img {
-    aspect-ratio: 4 / 3;
-    object-position: 28% center;
-  }
-
-  .clinical-office-banner__badge {
-    left: 0.75rem;
-    right: 0.75rem;
-    bottom: 0.75rem;
-    justify-content: center;
-    font-size: 0.52rem;
-    letter-spacing: 0.12em;
-    padding: 0.5rem 0.75rem;
-    text-align: center;
+    width: 100%;
+    height: auto;
   }
 
   .lacanian-concept-card {

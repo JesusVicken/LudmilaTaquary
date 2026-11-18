@@ -30,12 +30,11 @@ export const ProgressSidebar: React.FC<ProgressSidebarProps> = ({
   visible,
   onNavigate,
 }) => {
-  // Dark background sections (need light ink): 01 (Hero) and 06 (Footer/Contact)
-  // Light background sections (need dark ink): 02 (Sobre), 03 (Serviços), 04 (Palestras), 05 (FAQ)
+  // Dark background sections (need light ink): 01 (Hero), 04 (Palestras), and 06 (Footer/Contact)
+  // Light background sections (need dark ink): 02 (Sobre), 03 (Serviços), 05 (FAQ)
   const isLightSurface =
     activeSection === '02' ||
     activeSection === '03' ||
-    activeSection === '04' ||
     activeSection === '05';
 
   const clampedProgress = Math.min(Math.max(scrollProgress, 0), 1);

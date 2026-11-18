@@ -155,10 +155,6 @@ export const ServicesSection: React.FC = () => {
               alt="Espaço de acolhimento e escuta clínica — Ludmila Taquary Psicóloga e Psicanalista"
               className="clinical-office-banner__img"
             />
-            <div className="clinical-office-banner__badge">
-              <span className="clinical-office-banner__dot" />
-              <span>AMBIENTE DE ESCUTA, ACOLHIMENTO &amp; SINGULARIDADE</span>
-            </div>
           </div>
 
           <div className="lacanian-concept-card">

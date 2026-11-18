@@ -11,6 +11,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { LUDMILA_CONTENT } from '../data/ludmilaContent';
+import { OrganicShaderCanvas } from './OrganicShaderCanvas';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,6 +67,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       className="contact-section"
       aria-label="Informações de contato e agendamento"
     >
+      {/* Living WebGL Organic Green Shader Background */}
+      <OrganicShaderCanvas className="contact-shader-bg" seedOffset={56} />
+
       {/* Subtle atmospheric background of the clinical office */}
       <div
         className="contact-office-bg"

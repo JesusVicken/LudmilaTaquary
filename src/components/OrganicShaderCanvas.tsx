@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface OrganicShaderCanvasProps {
   className?: string;
+  seedOffset?: number;
 }
 
 const VERTEX_SHADER = `
@@ -73,7 +74,7 @@ const FRAGMENT_SHADER = `
 
     float t = u_time * 0.09;
 
-    // Subtle organic mouse influence
+    // Subtle organic mouse / touch influence
     float mouseDist = length(st - mouse);
     float mouseGlow = smoothstep(0.95, 0.0, mouseDist) * 0.18;
     vec2 mouseWarp = (st - mouse) * smoothstep(0.85, 0.0, mouseDist) * 0.09;
@@ -108,7 +109,6 @@ const FRAGMENT_SHADER = `
     // Base vertical & diagonal organic blend
     float blend1 = smoothstep(-0.65, 0.75, f + (uv.y * 0.35 - 0.15));
     float blend2 = smoothstep(-0.35, 0.85, q.x + r.y * 0.65);
-    float blend3 = smoothstep(0.1, 0.95, r.x * 0.7 + uv.x * 0.35 + mouseGlow);
 
     vec3 color = mix(deepOlive, oliveGreen, blend1);
     color = mix(color, softMoss, blend2 * 0.65);
@@ -133,6 +133,7 @@ const FRAGMENT_SHADER = `
 
 export const OrganicShaderCanvas: React.FC<OrganicShaderCanvasProps> = ({
   className = '',
+  seedOffset = 0,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -192,7 +193,7 @@ export const OrganicShaderCanvas: React.FC<OrganicShaderCanvasProps> = ({
 
     const handleResize = () => {
       if (!canvas) return;
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const width = Math.floor(canvas.clientWidth * dpr);
       const height = Math.floor(canvas.clientHeight * dpr);
       if (canvas.width !== width || canvas.height !== height) {
@@ -207,9 +208,18 @@ export const OrganicShaderCanvas: React.FC<OrganicShaderCanvasProps> = ({
       targetMouse.y = 1.0 - e.clientY / Math.max(window.innerHeight, 1);
     };
 
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        targetMouse.x = touch.clientX / Math.max(window.innerWidth, 1);
+        targetMouse.y = 1.0 - touch.clientY / Math.max(window.innerHeight, 1);
+      }
+    };
+
     handleResize();
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let prefersReducedMotion = mediaQuery.matches;
@@ -219,11 +229,13 @@ export const OrganicShaderCanvas: React.FC<OrganicShaderCanvasProps> = ({
     mediaQuery.addEventListener('change', handleMotionChange);
 
     let rafId = 0;
+    let isVisible = true;
     const startTime = performance.now();
 
-    const render = (now: number) => {
+    const drawFrame = (now: number) => {
       handleResize();
-      const elapsed = prefersReducedMotion ? 12.5 : (now - startTime) * 0.001;
+      const elapsed =
+        (prefersReducedMotion ? 12.5 : (now - startTime) * 0.001) + seedOffset;
 
       currentMouse.x += (targetMouse.x - currentMouse.x) * 0.045;
       currentMouse.y += (targetMouse.y - currentMouse.y) * 0.045;
@@ -233,21 +245,44 @@ export const OrganicShaderCanvas: React.FC<OrganicShaderCanvasProps> = ({
       gl.uniform2f(mouseLoc, currentMouse.x, currentMouse.y);
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
+    };
 
+    const render = (now: number) => {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
+      drawFrame(now);
       if (!prefersReducedMotion) {
         rafId = requestAnimationFrame(render);
       }
     };
 
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !rafId) {
+          drawFrame(performance.now());
+          if (!prefersReducedMotion) {
+            rafId = requestAnimationFrame(render);
+          }
+        }
+      },
+      { rootMargin: '200px 0px 200px 0px' }
+    );
+
+    observer.observe(canvas);
     rafId = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      observer.disconnect();
+      if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
       mediaQuery.removeEventListener('change', handleMotionChange);
     };
-  }, []);
+  }, [seedOffset]);
 
   return (
     <canvas
