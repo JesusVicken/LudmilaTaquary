@@ -23,7 +23,7 @@ export const LUDMILA_CONTENT = {
     mainText:
       'Sou psicóloga, graduada pelo CEUB, e especialista em Fundamentos da Psicanálise: de Freud a Lacan pelo Instituto ESPE. Minha trajetória articula a experiência clínica e a Psicologia Social, com uma atuação também voltada ao enfrentamento da violência contra a mulher.',
     featuredQuote:
-      '“Escutar-se é abrir-se espaço ao que ainda não se sabe de si.”',
+      '“Escutar-se é abrir espaço ao que ainda não se sabe de si.”',
     featuredQuoteClean:
       'Nossos atos falhados são atos que são bem sucedidos, nossas palavras que tropeçam são palavras que confessam',
     featuredQuoteAuthor: 'J. Lacan',
@@ -34,7 +34,7 @@ export const LUDMILA_CONTENT = {
     title: 'A Prática Clínica',
     subtitle:
       'Um trabalho orientado pela psicanálise lacaniana e sustentado pela singularidade de cada história e tempo subjetivo.',
-    quote: '“Escutar-se é abrir-se espaço ao que ainda não se sabe de si”',
+    quote: '“Escutar-se é abrir espaço ao que ainda não se sabe de si”',
     lacanianConcept:
       'A psicanálise parte do reconhecimento de que há, na experiência de cada sujeito, algo que excede o alcance da consciência. O inconsciente aparece quando a fala tropeça e diz mais do que pretendíamos: nos lapsos, nos sonhos, nos esquecimentos, nos sintomas e naquilo que se repete sem que saibamos o porquê. Na orientação lacaniana, a palavra ocupa um lugar central para que você possa reinterpretar a própria história e construir caminhos mais autênticos para se haver com a vida.',
     cards: [
