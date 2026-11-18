@@ -6,15 +6,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const MARQUEE_KEYWORDS = [
   'Ansiedade',
-  'Depressão',
   'Luto',
+  'Depressão',
   'Crises emocionais',
   'Autoestima',
   'Relacionamentos',
-  'Transtorno bipolar',
-  'Adolescentes',
-  'Adultos',
-  'Idosos',
+  'Transtornos',
 ] as const;
 
 export const ScrollKeywordsMarquee: React.FC = () => {
